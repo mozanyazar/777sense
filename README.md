@@ -12,23 +12,83 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Proje Hakkında
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backend
+- Prisma, mongodb ve next13 backendi kullanılarak basit bir backend yazılmıştır ve anasayfadaki ilgili kartların datası database sorguları ile gelmektedir. Tüm komponentler server komponentidir ve next13 ile gelen komponent içinde sorgu atma olayı kullanılmıştır.
+- NFT ile Creator ilişkilendirilmiştir
+```
+ model Nft {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  creator     Creator @relation(fields: [creatorId], references: [id])
+  creatorId   String  @map("creatorId") @db.ObjectId
+  price       Float
+}
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+model Creator {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  nfts Nft[]
+}     
 
-## Learn More
+```
 
-To learn more about Next.js, take a look at the following resources:
+### APIs
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Yeni NFT oluştur
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+  POST REQUEST > http://localhost:3000/api/new-nft
 
-## Deploy on Vercel
+  {
+    "title":"The Big mac",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar sollicitudin dui. ",
+    "creatorId": "64f76482a41912ccee22de20",
+    "price": 1.5
+  }
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  RESPONSE > {
+    "status": "success",
+    "message": "NFT oluşturuldu",
+    "data": {
+        "nft": {
+            "id": "64f787f7492408e4de14ee04",
+            "title": "The Big mac",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar sollicitudin dui. ",
+            "creatorId": "64f76482a41912ccee22de20",
+            "price": 1.5
+        }
+    }
+}
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+#### Yeni Creator oluştur
+
+```
+  POST REQUEST > http://localhost:3000/api/creator/new-creator
+
+  {
+    "name": "Roger Waters"
+  }
+
+  RESPONSE > {
+    "status": "success",
+    "message": "creator oluşturuldu",
+    "data": {
+        "creator": {
+            "id": "64f76482a41912ccee22de20",
+            "name": "Roger Waters"
+        }
+    }
+}
+```
+
+
+## Styling
+
+- Tailwindcss kullanıldı fakat bazı componentlerdeki elemanlar modulercss ile yazıldı.
+- Case kısa olduğu için herhangi bir değişken vs tanımlamadım fakat tanımlanabilir. (bu hali ile biraz kod tekrarı var)
+
+### Next12 veya React kullanılabilirdi ben son zamanlarda next13 yazdığım için bu versiyon ile yapmayı tercih ettim.
