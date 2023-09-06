@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Nft {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  creator     Creator @relation(fields: [creatorId], references: [id])
+  creatorId   String  @map("creatorId") @db.ObjectId
+  price       Float
+}
+
+model Creator {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  nfts Nft[]
+}
