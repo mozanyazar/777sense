@@ -7,7 +7,7 @@ export default async function loading() {
          baseColor='#ededed'
          highlightColor='#eee'
       >
-         <div className='max-w-[1440px] w-[95%] mx-auto flex flex-col gap-[30px] pt-[30px] pb-[60px] max-[1440px]:max-w-[1134px] max-[900px]:max<-w-[768px]'>
+         <div className='max-w-[1440px] w-[95%] mx-auto flex flex-col gap-[30px] pt-[30px] pb-[60px] max-[1440px]:max-w-[1134px] max-[900px]:max-w-[768px]'>
             <div className='w-[240px] h-[30px]'>
                <Skeleton />
             </div>
